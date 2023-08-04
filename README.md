@@ -2,11 +2,9 @@
 
 ## onvif
 ```sh
-$ git clone https://github.com/dlstreamer/dlstreamer.git
+$ git clone https://github.com/gnunu/dlstreamer -b onvif
 
 $ cd dlstreamer
-
-$ git am <the patch changing the dockerfile>
 
 build container image
 $ docker buildx build -t dlstreamer -f docker/binary/ubuntu/dlstreamer.Dockerfile --platform=linux/amd64 --build-arg http_proxy=${http_proxy} --build-arg https_proxy=${https_proxy}
