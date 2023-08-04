@@ -52,7 +52,9 @@ def create_pipeline(src, url, model, dev):
     pipeline_cmd = f'gst-launch-1.0 -v {src} location={url} ! decodebin ! videoconvert n-threads=4 ! \
 capsfilter caps="video/x-raw,format=BGRx" ! gvainference model-instance-id=nunu model={model} device={dev} ! \
 queue ! gvafpscounter ! fakesink async=false'
-    #os.system(pipeline_cmd)
+    pid = os.fork()
+    if pid == 0:
+        os.system(pipeline_cmd)
     return pipeline_cmd
 
 if __name__ == "__main__":
