@@ -9,7 +9,7 @@ from flask import Flask, request
 '''
 
 workDir = "/home/dlstreamer/"
-videoDir = workDir + "videos/"
+videoDir = workDir + "openyurt-solutions/onvif/tests/"
 modelDir = workDir + "models/"
 
 app = Flask(__name__)
