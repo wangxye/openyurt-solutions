@@ -23,7 +23,7 @@ def pipeline():
     src = "rtspsrc"
     url = ""
     dev = "CPU"
-    model = "horizontal-text-detection-0001.xml"
+    model = "person-vehicle-bike-detection-2000.xml"
 
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
