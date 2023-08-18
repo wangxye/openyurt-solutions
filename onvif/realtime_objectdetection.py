@@ -8,7 +8,7 @@ import numpy as np
 from IPython import display
 from openvino.runtime import Core
 import threading
-from onvif.videoplay import VideoPlayer
+from videoplay import VideoPlayer
 
 '''
 person-vehicle-bike-detection-2000
@@ -16,6 +16,7 @@ person-vehicle-bike-detection-2000
 base_model_dir = "models"
 # model name as named in Open Model Zoo
 model_name = "person-vehicle-bike-detection-2000-FP32"
+# model_name = "ssdlite_mobilenet_v2"
 # output path for the conversion
 converted_model_path = f"{base_model_dir}/{model_name}.xml"
 
@@ -126,7 +127,8 @@ def draw_boxes(frame, boxes):
         )
 
     return frame
-
+from queue import Queue
+frame_queue = Queue()
 
 '''
 run_object_detection
@@ -137,7 +139,8 @@ run_object_detection
 - flip: Some of the images from the camera are inverted. Here you need to flip.
 -use_popup: Set this to True if we are running under.py and need to popup the video result, false if we are running in the notebook.
 '''
-def run_object_detection(source=0, flip=False, use_popup=False, skip_first_frames=0):
+def run_object_detection(source=0, flip=False, use_popup=False, skip_first_frames=0, is_backed = False):
+    global frame_queue
     player = None
     try:
         # create video player to play with target fps
@@ -146,7 +149,7 @@ def run_object_detection(source=0, flip=False, use_popup=False, skip_first_frame
         )
         # start capturing
         player.start()
-        if use_popup:
+        if use_popup and not is_backed:
             title = "Press ESC to Exit"
             cv2.namedWindow(
                 winname=title, flags=cv2.WINDOW_GUI_NORMAL | cv2.WINDOW_AUTOSIZE
@@ -210,7 +213,10 @@ def run_object_detection(source=0, flip=False, use_popup=False, skip_first_frame
                 thickness=1,
                 lineType=cv2.LINE_AA,
             )
-
+            # last_frame = frame
+            frame_queue.put(frame, block=False)
+            if is_backed:
+                continue
             # use this workaround if there is flickering
             if use_popup:
                 cv2.imshow(winname=title, mat=frame)
@@ -229,6 +235,7 @@ def run_object_detection(source=0, flip=False, use_popup=False, skip_first_frame
                 # display the image in this notebook
                 display.clear_output(wait=True)
                 display.display(i)
+              
     # ctrl-c
     except KeyboardInterrupt:
         print("Interrupted")
