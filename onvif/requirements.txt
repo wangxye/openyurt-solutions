@@ -1,0 +1,6 @@
+Flask==2.3.2
+ipython==7.16.3
+numpy==1.17.3
+opencv_python==4.5.5.64
+openvino==2022.1.0
+openvino_dev==2022.1.0
