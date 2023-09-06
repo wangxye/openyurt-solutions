@@ -25,12 +25,24 @@ def hello():
 def inference_video():
     return Response(gen_inference_frame(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
+FRAME_CACHE_TIMEOUT = 120 # 清空帧的时间间隔，单位秒
+last_cleaned_time = time.time()
+
+def clean_frame_cache():
+    global last_cleaned_time
+    current_time = time.time()
+    while frame_queue.qsize() > FRAME_CACHE_TIMEOUT:
+        frame_queue.get()
+        
 def gen_inference_frame():
     global last_frame
     while True:
+        # remove frame cache
+        clean_frame_cache()
         # get the final image
         # frame = last_frame
         frame = frame_queue.get()
+        # frame, timestamp = frame_queue.get()
         # encode the image to JPEG format
         _, encoded_img = cv2.imencode(".jpg", frame)
         yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + 
