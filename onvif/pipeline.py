@@ -25,8 +25,7 @@ def hello():
 def inference_video():
     return Response(gen_inference_frame(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
-FRAME_CACHE_TIMEOUT = 120 # 清空帧的时间间隔，单位秒
-last_cleaned_time = time.time()
+FRAME_CACHE_TIMEOUT = 10
 
 def clean_frame_cache():
     global last_cleaned_time

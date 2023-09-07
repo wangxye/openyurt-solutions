@@ -15,7 +15,7 @@ person-vehicle-bike-detection-2000
 '''
 base_model_dir = "models"
 # model name as named in Open Model Zoo
-model_name = "person-vehicle-bike-detection-2000-FP32"
+model_name = "person-vehicle-bike-detection-2000"
 # model_name = "ssdlite_mobilenet_v2"
 # output path for the conversion
 converted_model_path = f"{base_model_dir}/{model_name}.xml"
