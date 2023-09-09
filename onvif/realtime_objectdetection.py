@@ -145,7 +145,7 @@ def run_object_detection(source=0, flip=False, use_popup=False, skip_first_frame
     try:
         # create video player to play with target fps
         player = VideoPlayer(
-            source=source, flip=flip, fps=30, skip_first_frames=skip_first_frames
+            source=source, flip=flip, fps=20, skip_first_frames=skip_first_frames
         )
         # start capturing
         player.start()

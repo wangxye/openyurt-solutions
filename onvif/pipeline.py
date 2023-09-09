@@ -4,6 +4,8 @@ import os
 from flask import Flask, request,Response
 from realtime_objectdetection import *
 import asyncio
+from gevent import pywsgi
+
 
 '''
     pipeline server run with dlstreamer
@@ -100,4 +102,6 @@ queue ! gvafpscounter ! fakesink async=false'
     return pipeline_cmd
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=55555)
+    # app.run(debug=True, host="0.0.0.0", port=55555)
+    server = pywsgi.WSGIServer(('0.0.0.0', 55555), app)
+    server.serve_forever()
